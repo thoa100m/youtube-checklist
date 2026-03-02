@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quy Trình Chuẩn Làm Video YouTube</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0a0a1a 0%, #121230 40%, #1a1a3e 100%);
+            color: #e0e0e0;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        /* HEADER */
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+            position: relative;
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, #ff6b6b, #feca57, #48dbfb, #55efc4);
+            border-radius: 2px;
+        }
+
+        .header .badge {
+            display: inline-block;
+            background: linear-gradient(135deg, rgba(255, 107, 107, 0.15), rgba(254, 202, 87, 0.15));
+            border: 1px solid rgba(255, 107, 107, 0.3);
+            color: #feca57;
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            padding: 6px 16px;
+            border-radius: 20px;
+            margin-bottom: 16px;
+        }
+
+        .header h1 {
+            font-size: 2.4rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #ff6b6b, #feca57, #48dbfb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+            letter-spacing: -0.5px;
+            line-height: 1.2;
+        }
+
+        .header p {
+            font-size: 0.95rem;
+            color: #777;
+            font-weight: 500;
+        }
+
+        /* FLOW CONNECTORS */
+        .flow-arrow {
+            display: flex;
+            justify-content: center;
+            margin: 12px 0;
+        }
+
+        .flow-arrow .arrow {
+            width: 3px;
+            height: 36px;
+            background: linear-gradient(to bottom, rgba(72, 219, 251, 0.6), rgba(72, 219, 251, 0.2));
+            position: relative;
+        }
+
+        .flow-arrow .arrow::after {
+            content: '▼';
+            position: absolute;
+            bottom: -13px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgba(72, 219, 251, 0.5);
+            font-size: 11px;
+        }
+
+        /* PHASE CARD */
+        .phase {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 20px;
+            padding: 28px 30px;
+            margin-bottom: 8px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .phase::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+        }
+
+        .phase:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.25);
+            border-color: rgba(255, 255, 255, 0.12);
+        }
+
+        .phase-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 18px;
+        }
+
+        .phase-num {
+            width: 46px;
+            height: 46px;
+            border-radius: 13px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            font-weight: 900;
+            flex-shrink: 0;
+            color: #fff;
+        }
+
+        .phase-info h3 {
+            font-size: 1.1rem;
+            font-weight: 800;
+            letter-spacing: -0.3px;
+        }
+
+        .phase-info .subtitle {
+            font-size: 0.78rem;
+            color: #777;
+            margin-top: 2px;
+        }
+
+        .phase-info .time-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.68rem;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.06);
+            color: #999;
+            margin-top: 4px;
+        }
+
+        /* CHECKLIST */
+        .checklist {
+            display: grid;
+            gap: 6px;
+            list-style: none;
+        }
+
+        .checklist.two-col {
+            grid-template-columns: 1fr 1fr;
+            gap: 6px 20px;
+        }
+
+        @media (max-width: 768px) {
+            .checklist.two-col {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .checklist li {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 0.84rem;
+            line-height: 1.55;
+            color: #bbb;
+            padding: 6px 10px;
+            border-radius: 8px;
+            transition: background 0.2s;
+            cursor: pointer;
+        }
+
+        .checklist li:hover {
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .checklist li input[type="checkbox"] {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+            flex-shrink: 0;
+            margin-top: 1px;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .checklist li input[type="checkbox"]:checked {
+            border-color: #55efc4;
+            background: #55efc4;
+        }
+
+        .checklist li input[type="checkbox"]:checked::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #0a0a1a;
+            font-size: 12px;
+            font-weight: 900;
+        }
+
+        .checklist li input[type="checkbox"]:checked+span {
+            text-decoration: line-through;
+            color: #666;
+        }
+
+        /* SUB-SECTIONS */
+        .sub-section {
+            margin-top: 14px;
+            padding-top: 14px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .sub-title {
+            font-size: 0.78rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* TIP BOXES */
+        .tip-box {
+            background: rgba(254, 202, 87, 0.06);
+            border: 1px solid rgba(254, 202, 87, 0.15);
+            border-radius: 12px;
+            padding: 14px 18px;
+            margin-top: 14px;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 0.8rem;
+            color: #ccc;
+            line-height: 1.5;
+        }
+
+        .tip-box .tip-icon {
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+
+        .tip-box strong {
+            color: #feca57;
+        }
+
+        .warning-box {
+            background: rgba(255, 107, 107, 0.06);
+            border: 1px solid rgba(255, 107, 107, 0.15);
+            border-radius: 12px;
+            padding: 14px 18px;
+            margin-top: 14px;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 0.8rem;
+            color: #ccc;
+            line-height: 1.5;
+        }
+
+        .warning-box .tip-icon {
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+
+        .warning-box strong {
+            color: #ff6b6b;
+        }
+
+        /* COLORS PER PHASE */
+        .p1::before {
+            background: linear-gradient(90deg, #a29bfe, #6c5ce7);
+        }
+
+        .p1 .phase-num {
+            background: linear-gradient(135deg, #a29bfe, #6c5ce7);
+        }
+
+        .p1 h3 {
+            color: #a29bfe;
+        }
+
+        .p2::before {
+            background: linear-gradient(90deg, #48dbfb, #0abde3);
+        }
+
+        .p2 .phase-num {
+            background: linear-gradient(135deg, #48dbfb, #0abde3);
+        }
+
+        .p2 h3 {
+            color: #48dbfb;
+        }
+
+        .p3::before {
+            background: linear-gradient(90deg, #55efc4, #00b894);
+        }
+
+        .p3 .phase-num {
+            background: linear-gradient(135deg, #55efc4, #00b894);
+        }
+
+        .p3 h3 {
+            color: #55efc4;
+        }
+
+        .p4::before {
+            background: linear-gradient(90deg, #feca57, #f0932b);
+        }
+
+        .p4 .phase-num {
+            background: linear-gradient(135deg, #feca57, #f0932b);
+        }
+
+        .p4 h3 {
+            color: #feca57;
+        }
+
+        .p5::before {
+            background: linear-gradient(90deg, #ff6b6b, #ee5a24);
+        }
+
+        .p5 .phase-num {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+        }
+
+        .p5 h3 {
+            color: #ff6b6b;
+        }
+
+        .p6::before {
+            background: linear-gradient(90deg, #fd79a8, #e84393);
+        }
+
+        .p6 .phase-num {
+            background: linear-gradient(135deg, #fd79a8, #e84393);
+        }
+
+        .p6 h3 {
+            color: #fd79a8;
+        }
+
+        .p7::before {
+            background: linear-gradient(90deg, #74b9ff, #0984e3);
+        }
+
+        .p7 .phase-num {
+            background: linear-gradient(135deg, #74b9ff, #0984e3);
+        }
+
+        .p7 h3 {
+            color: #74b9ff;
+        }
+
+        /* CYCLE INDICATOR */
+        .cycle-wrap {
+            display: flex;
+            justify-content: center;
+            margin: 16px 0;
+        }
+
+        .cycle-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, rgba(116, 185, 255, 0.1), rgba(9, 132, 227, 0.1));
+            border: 1px solid rgba(116, 185, 255, 0.3);
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #74b9ff;
+        }
+
+        /* PROGRESS BAR */
+        .progress-wrap {
+            margin-top: 40px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 16px;
+            padding: 24px 28px;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .progress-header h4 {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #ddd;
+        }
+
+        .progress-count {
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: #55efc4;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #55efc4, #00b894);
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        /* FOOTER */
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+            font-size: 0.78rem;
+            color: #555;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+
+        <!-- HEADER -->
+        <div class="header">
+            <div class="badge">📋 Standard Operating Procedure</div>
+            <h1>Quy Trình Chuẩn Làm Video YouTube</h1>
+            <p>7 bước — Từ nghiên cứu → sản xuất → tối ưu → phân tích — Checklist chi tiết từng phase</p>
+        </div>
+
+        <!-- ═══════════════════════════════════════ -->
+        <!-- PHASE 1: RESEARCH & KEY -->
+        <!-- ═══════════════════════════════════════ -->
+        <div class="phase p1">
+            <div class="phase-header">
+                <div class="phase-num">01</div>
+                <div class="phase-info">
+                    <h3>Nghiên Cứu & Chọn Key</h3>
+                    <div class="subtitle">Xác định góc tiếp cận trước khi bấm quay</div>
+                    <div class="time-badge">⏱ ~30–60 phút / video</div>
+                </div>
+            </div>
+            <ul class="checklist two-col">
+                <li><input type="checkbox"><span>Xác định chủ đề video (topic rõ ràng)</span></li>
+                <li><input type="checkbox"><span>Nghiên cứu đối thủ: xem 5–10 video cùng topic</span></li>
+                <li><input type="checkbox"><span>Chọn <strong>key (góc tiếp cận)</strong> khác biệt</span></li>
+                <li><input type="checkbox"><span>Đánh giá key có đúng level mình không</span></li>
+                <li><input type="checkbox"><span>Tìm keyword phụ để hỗ trợ SEO</span></li>
+                <li><input type="checkbox"><span>Xác định đối tượng xem (audience target)</span></li>
+                <li><input type="checkbox"><span>Ghi chú "lời hứa" cho viewer (promise)</span></li>
+                <li><input type="checkbox"><span>Check volume search (nếu làm SEO video)</span></li>
+            </ul>
+            <div class="tip-box">
+                <div class="tip-icon">💡</div>
+                <div><strong>Tip:</strong> Đừng level 2 mà ôm key level 9. Chọn key dễ thở, ít cạnh tranh, đúng sức
+                    mình. Key quyết định 50% thành bại!</div>
+            </div>
+        </div>
+
+        <div class="flow-arrow">
+            <div class="arrow"></div>
+        </div>
+
+        <!-- ═══════════════════════════════════════ -->
+        <!-- PHASE 2: SCRIPT -->
+        <!-- ═══════════════════════════════════════ -->
+        <div class="phase p2">
+            <div class="phase-header">
+                <div class="phase-num">02</div>
+                <div class="phase-info">
+                    <h3>Viết Script & Kịch Bản</h3>
+                    <div class="subtitle">Lên khung nội dung — đảm bảo giữ chân người xem</div>
+                    <div class="time-badge">⏱ ~1–2 giờ / video</div>
+                </div>
+            </div>
+
+            <div class="sub-title" style="color:#48dbfb;">🎣 Hook (10 giây đầu)</div>
+            <ul class="checklist">
+                <li><input type="checkbox"><span>Viết hook gây tò mò ngay câu đầu tiên</span></li>
+                <li><input type="checkbox"><span>Đặt vấn đề / câu hỏi mà viewer muốn biết đáp án</span></li>
+                <li><input type="checkbox"><span>Preview kết quả / giá trị viewer sẽ nhận được</span></li>
+                <li><input type="checkbox"><span>Không giới thiệu bản thân — đi thẳng vào vấn đề</span></li>
+            </ul>
+
+            <div class="sub-section">
+                <div class="sub-title" style="color:#48dbfb;">📝 Thân bài (Body)</div>
+                <ul class="checklist two-col">
+                    <li><input type="checkbox"><span>Chia nội dung thành 3–5 phần rõ ràng</span></li>
+                    <li><input type="checkbox"><span>Mỗi phần có 1 ý chính — không lan man</span></li>
+                    <li><input type="checkbox"><span>Thêm ví dụ / minh họa thực tế</span></li>
+                    <li><input type="checkbox"><span>Có open loop giữa các phần để giữ chân</span></li>
+                    <li><input type="checkbox"><span>Nội dung khớp với "lời hứa" ở tiêu đề</span></li>
+                    <li><input type="checkbox"><span>Không hứa 1 đằng nói 1 nẻo</span></li>
+                </ul>
+            </div>
+
+            <div class="sub-section">
+                <div class="sub-title" style="color:#48dbfb;">🔚 Kết bài (CTA)</div>
+                <ul class="checklist">
+                    <li><input type="checkbox"><span>Tóm tắt giá trị viewer nhận được</span></li>
+                    <li><input type="checkbox"><span>Call-to-action rõ ràng (like, sub, comment)</span></li>
+                    <li><input type="checkbox"><span>Teaser cho video tiếp theo (nếu có)</span></li>
+                </ul>
+            </div>
+
+            <div class="warning-box">
+                <div class="tip-icon">⚠️</div>
+                <div><strong>Cảnh báo:</strong> Hook yếu = retention rớt ngay 10s đầu → YouTube không đề xuất. Đây là
+                    phần QUAN TRỌNG NHẤT của script!</div>
+            </div>
+        </div>
+
+        <div class="flow-arrow">
+            <div class="arrow"></div>
+        </div>
+
+        <!-- ═══════════════════════════════════════ -->
+        <!-- PHASE 3: PRODUCTION -->
+        <!-- ═══════════════════════════════════════ -->
+        <div class="phase p3">
+            <div class="phase-header">
+                <div class="phase-num">03</div>
+                <div class="phase-info">
+                    <h3>Sản Xuất Video</h3>
+                    <div class="subtitle">Quay / dựng / edit — giữ nhịp video liên tục</div>
+                    <div class="time-badge">⏱ ~2–4 giờ / video</div>
+                </div>
+            </div>
+
+            <div class="sub-title" style="color:#55efc4;">🎥 Quay / Ghi hình</div>
+            <ul class="checklist two-col">
+                <li><input type="checkbox"><span>Chuẩn bị thiết bị (camera/mic/ánh sáng)</span></li>
+                <li><input type="checkbox"><span>Chất lượng âm thanh rõ ràng (ưu tiên #1)</span></li>
+                <li><input type="checkbox"><span>Quay theo script — không ngẫu hứng quá nhiều</span></li>
+                <li><input type="checkbox"><span>Quay nhiều take cho hook — chọn take tốt nhất</span></li>
+            </ul>
+
+            <div class="sub-section">
+                <div class="sub-title" style="color:#55efc4;">✂️ Dựng phim / Edit</div>
+                <ul class="checklist two-col">
+                    <li><input type="checkbox"><span>Cắt bỏ phần thừa, im lặng, ậm ừ</span></li>
+                    <li><input type="checkbox"><span>Thêm B-roll / hình minh họa</span></li>
+                    <li><input type="checkbox"><span>Thêm text overlay cho điểm key</span></li>
+                    <li><input type="checkbox"><span>Nhạc nền phù hợp (không quá to)</span></li>
+                    <li><input type="checkbox"><span>Hiệu ứng chuyển cảnh mượt mà</span></li>
+                    <li><input type="checkbox"><span>Zoom / pan cho nhịp động</span></li>
+                    <li><input type="checkbox"><span>Thêm subtitle (phụ đề) nếu cần</span></li>
+                    <li><input type="checkbox"><span>Nhịp video nhanh — không có đoạn "chết"</span></li>
+                </ul>
+            </div>
+
+            <div class="tip-box">
+                <div class="tip-icon">💡</div>
+                <div><strong>Tip:</strong> Cứ 3–5 giây phải có 1 thay đổi hình ảnh (zoom, B-roll, text, hiệu ứng) để giữ
+                    chân viewer. Nhịp video quyết định retention!</div>
+            </div>
+        </div>
+
+        <div class="flow-arrow">
+            <div class="arrow"></div>
+        </div>
+
+        <!-- ═══════════════════════════════════════ -->
+        <!-- PHASE 4: THUMBNAIL & TITLE -->
+        <!-- ═══════════════════════════════════════ -->
+        <div class="phase p4">
+            <div class="phase-header">
+                <div class="phase-num">04</div>
+                <div class="phase-info">
+                    <h3>Thumbnail & Tiêu Đề</h3>
+                    <div class="subtitle">"Cửa vào" quyết định CTR — không ai bấm thì nội dung hay cũng vô nghĩa</div>
+                    <div class="time-badge">⏱ ~30–60 phút / video</div>
+                </div>
+            </div>
+
+            <div class="sub-title" style="color:#feca57;">🖼️ Thumbnail</div>
+            <ul class="checklist two-col">
+                <li><input type="checkbox"><span>Hình ảnh rõ ràng, nổi bật khi thu nhỏ</span></li>
+                <li><input type="checkbox"><span>Tối đa 3–4 từ trên thumbnail</span></li>
+                <li><input type="checkbox"><span>Khuôn mặt/biểu cảm mạnh (nếu facecam)</span></li>
+                <li><input type="checkbox"><span>Contrast cao — nổi bật trên feed</span></li>
+                <li><input type="checkbox"><span>Không trùng lặp với thumb cũ trên kênh</span></li>
+                <li><input type="checkbox"><span>Test xem trên mobile (kích thước nhỏ)</span></li>
+            </ul>
+
+            <div class="sub-section">
+                <div class="sub-title" style="color:#feca57;">✏️ Tiêu đề</div>
+                <ul class="checklist">
+                    <li><input type="checkbox"><span>Kích thích tò mò — viewer MUỐN bấm xem</span></li>
+                    <li><input type="checkbox"><span>Có keyword chính (SEO friendly)</span></li>
+                    <li><input type="checkbox"><span>Dưới 60 ký tự (không bị cắt trên mobile)</span></li>
+                    <li><input type="checkbox"><span>Khớp với nội dung — không clickbait quá</span></li>
+                    <li><input type="checkbox"><span>Title + Thumbnail = 1 câu chuyện hoàn chỉnh</span></li>
+                </ul>
+            </div>
+
+            <div class="warning-box">
+                <div class="tip-icon">🔴</div>
+                <div><strong>Case A từ chẩn đoán:</strong> Có impressions nhưng không click = thumbnail & tiêu đề chưa
+                    đủ hấp dẫn. Đây là thứ cần sửa ĐẦU TIÊN!</div>
+            </div>
+        </div>
+
+        <div class="flow-arrow">
+            <div class="arrow"></div>
+        </div>
+
+        <!-- ═══════════════════════════════════════ -->
+        <!-- PHASE 5: UPLOAD & SEO -->
+        <!-- ═══════════════════════════════════════ -->
+        <div class="phase p5">
+            <div class="phase-header">
+                <div class="phase-num">05</div>
+                <div class="phase-info">
+                    <h3>Upload & Tối Ưu SEO</h3>
+                    <div class="subtitle">Cài đặt đúng để YouTube hiểu video bạn nói về cái gì</div>
+                    <div class="time-badge">⏱ ~15–20 phút / video</div>
+                </div>
+            </div>
+            <ul class="checklist two-col">
+                <li><input type="checkbox"><span>Upload video chất lượng cao nhất (1080p+)</span></li>
+                <li><input type="checkbox"><span>Điền tiêu đề đã chuẩn bị ở Phase 4</span></li>
+                <li><input type="checkbox"><span>Viết description: 2–3 dòng mô tả + keywords</span></li>
+                <li><input type="checkbox"><span>Thêm tags liên quan (10–15 tags)</span></li>
+                <li><input type="checkbox"><span>Upload thumbnail custom</span></li>
+                <li><input type="checkbox"><span>Chọn category phù hợp</span></li>
+                <li><input type="checkbox"><span>Thêm cards & end screen</span></li>
+                <li><input type="checkbox"><span>Thêm chapters (timestamps) nếu video dài</span></li>
+                <li><input type="checkbox"><span>Chọn playlist phù hợp</span></li>
+                <li><input type="checkbox"><span>Schedule hoặc publish đúng giờ vàng</span></li>
+            </ul>
+            <div class="tip-box">
+                <div class="tip-icon">💡</div>
+                <div><strong>Tip:</strong> Đăng video đều đặn, cùng format → YouTube nhận diện kênh bạn là ai. 5–10
+                    video cùng series giúp thuật toán hiểu nhanh hơn.</div>
+            </div>
+        </div>
+
+        <div class="flow-arrow">
+            <div class="arrow"></div>
+        </div>
+
+        <!-- ═══════════════════════════════════════ -->
+        <!-- PHASE 6: MONITOR -->
+        <!-- ═══════════════════════════════════════ -->
+        <div class="phase p6">
+            <div class="phase-header">
+                <div class="phase-num">06</div>
+                <div class="phase-info">
+                    <h3>Theo Dõi Sau Upload</h3>
+                    <div class="subtitle">48 giờ đầu — đọc data để biết video đang "chạy" hay "chết"</div>
+                    <div class="time-badge">⏱ Check mỗi 12h trong 48h đầu</div>
+                </div>
+            </div>
+
+            <div class="sub-title" style="color:#fd79a8;">📊 Chỉ số cần theo dõi</div>
+            <ul class="checklist two-col">
+                <li><input type="checkbox"><span><strong>Impressions</strong> — YouTube có hiển thị không?</span></li>
+                <li><input type="checkbox"><span><strong>CTR</strong> — Có người bấm vào xem không?</span></li>
+                <li><input type="checkbox"><span><strong>Avg. View Duration</strong> — Xem được bao lâu?</span></li>
+                <li><input type="checkbox"><span><strong>Retention graph</strong> — Rớt ở đoạn nào?</span></li>
+                <li><input type="checkbox"><span><strong>Traffic sources</strong> — Browse/Suggested có không?</span>
+                </li>
+                <li><input type="checkbox"><span><strong>Click sources</strong> — Từ đâu tới
+                        (search/suggest/browse)?</span></li>
+            </ul>
+
+            <div class="sub-section">
+                <div class="sub-title" style="color:#fd79a8;">🚩 Dấu hiệu cần hành động</div>
+                <ul class="checklist">
+                    <li><input type="checkbox"><span>CTR < 3% → Cân nhắc đổi thumbnail/title ngay</span>
+                    </li>
+                    <li><input type="checkbox"><span>Retention rớt mạnh ở 10s đầu → Hook yếu</span></li>
+                    <li><input type="checkbox"><span>Impressions = 0 sau 24h → Kênh có vấn đề</span></li>
+                    <li><input type="checkbox"><span>Reply comment sớm để tăng engagement</span></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="flow-arrow">
+            <div class="arrow"></div>
+        </div>
+
+        <!-- ═══════════════════════════════════════ -->
+        <!-- PHASE 7: ANALYZE & LOOP -->
+        <!-- ═══════════════════════════════════════ -->
+        <div class="phase p7">
+            <div class="phase-header">
+                <div class="phase-num">07</div>
+                <div class="phase-info">
+                    <h3>Phân Tích & Cải Thiện</h3>
+                    <div class="subtitle">Chẩn đoán "Tại Kênh" hay "Tại Mình" — Lặp lại sau mỗi 5–10 video</div>
+                    <div class="time-badge">⏱ ~30 phút / lần review</div>
+                </div>
+            </div>
+
+            <div class="sub-title" style="color:#74b9ff;">🔍 Áp dụng 3 Case chẩn đoán</div>
+            <ul class="checklist">
+                <li><input type="checkbox"><span><strong>Case A:</strong> Có impressions + CTR thấp → Sửa thumbnail,
+                        tiêu đề, key</span></li>
+                <li><input type="checkbox"><span><strong>Case B:</strong> Có click + retention rớt → Sửa hook, nhịp
+                        video, nội dung</span></li>
+                <li><input type="checkbox"><span><strong>Case C:</strong> Không có impressions → Đổi key, test kênh mới,
+                        format mới</span></li>
+            </ul>
+
+            <div class="sub-section">
+                <div class="sub-title" style="color:#74b9ff;">📈 Hành động cải thiện</div>
+                <ul class="checklist two-col">
+                    <li><input type="checkbox"><span>Nhân bản format từ video "hit" nhất</span></li>
+                    <li><input type="checkbox"><span>A/B test thumbnail trên video cũ</span></li>
+                    <li><input type="checkbox"><span>So sánh data giữa 5 kênh test</span></li>
+                    <li><input type="checkbox"><span>Bỏ kênh "im" — giữ kênh có signal</span></li>
+                    <li><input type="checkbox"><span>Ghi chú bài học rút ra → cải thiện video sau</span></li>
+                    <li><input type="checkbox"><span>Update checklist cá nhân dựa trên kinh nghiệm</span></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- CYCLE BACK -->
+        <div class="cycle-wrap">
+            <div class="cycle-badge">
+                🔄 Lặp lại Phase 1 → 7 cho mỗi video mới — Cải thiện liên tục!
+            </div>
+        </div>
+
+        <!-- PROGRESS TRACKER -->
+        <div class="progress-wrap">
+            <div class="progress-header">
+                <h4>📊 Tiến Độ Checklist</h4>
+                <div class="progress-count" id="progressCount">0 / 0</div>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+        </div>
+
+        <div class="footer">
+            Quy trình dựa trên kinh nghiệm thực chiến từ 100+ kênh · "5 kênh chọn 1" · Phân biệt "Tại Kênh" vs "Tại
+            Mình"
+        </div>
+
+    </div>
+
+    <script>
+        // Interactive checkbox progress tracker
+        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        const progressCount = document.getElementById('progressCount');
+        const progressFill = document.getElementById('progressFill');
+        const total = checkboxes.length;
+
+        function updateProgress() {
+            const checked = document.querySelectorAll('input[type="checkbox"]:checked').length;
+            progressCount.textContent = checked + ' / ' + total;
+            progressFill.style.width = (checked / total * 100) + '%';
+        }
+
+        checkboxes.forEach(cb => cb.addEventListener('change', updateProgress));
+        updateProgress();
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sơ Đồ Phát Triển Kênh YouTube</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(135deg, #0f0c29 0%, #1a1a3e 30%, #24243e 100%);
+    color: #e0e0e0;
+    min-height: 100vh;
+    padding: 40px 20px;
+  }
+
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  /* HEADER */
+  .header {
+    text-align: center;
+    margin-bottom: 50px;
+  }
+  .header h1 {
+    font-size: 2.2rem;
+    font-weight: 900;
+    background: linear-gradient(135deg, #ff6b6b, #feca57, #48dbfb);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 10px;
+    letter-spacing: -0.5px;
+  }
+  .header p {
+    font-size: 1rem;
+    color: #888;
+    font-weight: 500;
+  }
+
+  /* FLOW CONNECTOR */
+  .flow-arrow {
+    display: flex;
+    justify-content: center;
+    margin: 16px 0;
+  }
+  .flow-arrow .arrow {
+    width: 3px;
+    height: 40px;
+    background: linear-gradient(to bottom, #48dbfb, #0abde3);
+    position: relative;
+  }
+  .flow-arrow .arrow::after {
+    content: '▼';
+    position: absolute;
+    bottom: -14px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #0abde3;
+    font-size: 12px;
+  }
+
+  /* PHASE CARDS */
+  .phase-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 20px;
+    padding: 30px;
+    margin-bottom: 10px;
+    backdrop-filter: blur(10px);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .phase-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+  }
+  .phase-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 18px;
+  }
+  .phase-icon {
+    width: 50px; height: 50px;
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem;
+    flex-shrink: 0;
+  }
+  .phase-title {
+    font-size: 1.2rem;
+    font-weight: 800;
+    letter-spacing: -0.3px;
+  }
+  .phase-subtitle {
+    font-size: 0.82rem;
+    color: #888;
+    margin-top: 2px;
+  }
+
+  /* STEP LIST */
+  .step-list {
+    list-style: none;
+    display: grid;
+    gap: 8px;
+  }
+  .step-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 0.88rem;
+    line-height: 1.5;
+    color: #c0c0c0;
+  }
+  .step-list li .dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-top: 6px;
+  }
+
+  /* DIAGNOSTIC SECTION */
+  .diagnostic-section {
+    margin-top: 10px;
+  }
+  .diagnostic-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+    margin-top: 10px;
+  }
+  @media (max-width: 768px) {
+    .diagnostic-grid { grid-template-columns: 1fr; }
+  }
+
+  .case-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px;
+    padding: 22px;
+    position: relative;
+    overflow: hidden;
+  }
+  .case-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+  }
+  .case-card.case-a::before { background: linear-gradient(90deg, #ff6b6b, #ee5a24); }
+  .case-card.case-b::before { background: linear-gradient(90deg, #feca57, #f0932b); }
+  .case-card.case-c::before { background: linear-gradient(90deg, #48dbfb, #0abde3); }
+
+  .case-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 4px 10px;
+    border-radius: 6px;
+    margin-bottom: 12px;
+  }
+  .case-a .case-label { background: rgba(255,107,107,0.15); color: #ff6b6b; }
+  .case-b .case-label { background: rgba(254,202,87,0.15); color: #feca57; }
+  .case-c .case-label { background: rgba(72,219,251,0.15); color: #48dbfb; }
+
+  .case-title {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .case-symptom {
+    font-size: 0.8rem;
+    color: #999;
+    margin-bottom: 14px;
+    line-height: 1.5;
+  }
+  .case-symptom strong { color: #ddd; }
+
+  .fix-list {
+    list-style: none;
+  }
+  .fix-list li {
+    font-size: 0.82rem;
+    color: #c0c0c0;
+    padding: 5px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .fix-list li:last-child { border-bottom: none; }
+  .fix-list li .fix-icon { flex-shrink: 0; font-size: 0.75rem; margin-top: 2px; }
+
+  /* STRATEGY SECTION */
+  .strategy-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 12px;
+  }
+  @media (max-width: 768px) {
+    .strategy-grid { grid-template-columns: 1fr; }
+  }
+  .strategy-box {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 14px;
+    padding: 22px;
+  }
+  .strategy-box h4 {
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* 60s TEST */
+  .test-section {
+    background: linear-gradient(135deg, rgba(255,107,107,0.08), rgba(254,202,87,0.08));
+    border: 1px solid rgba(255,107,107,0.2);
+    border-radius: 20px;
+    padding: 30px;
+    margin-top: 10px;
+  }
+  .test-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 18px;
+  }
+  .test-header h3 {
+    font-size: 1.15rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #ff6b6b, #feca57);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .test-grid {
+    display: grid;
+    gap: 10px;
+  }
+  .test-row {
+    display: grid;
+    grid-template-columns: 40px 1fr auto;
+    align-items: center;
+    gap: 12px;
+    background: rgba(0,0,0,0.2);
+    border-radius: 10px;
+    padding: 12px 16px;
+  }
+  .test-num {
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: #feca57;
+    text-align: center;
+  }
+  .test-question {
+    font-size: 0.85rem;
+    color: #ddd;
+  }
+  .test-result {
+    font-size: 0.75rem;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .test-result.check-channel { background: rgba(72,219,251,0.15); color: #48dbfb; }
+  .test-result.check-content { background: rgba(255,107,107,0.15); color: #ff6b6b; }
+
+  /* CONCLUSION */
+  .conclusion {
+    text-align: center;
+    margin-top: 10px;
+    padding: 24px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 16px;
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+  .conclusion p {
+    font-size: 0.9rem;
+    color: #999;
+    line-height: 1.7;
+  }
+  .conclusion strong {
+    color: #feca57;
+  }
+
+  /* COLOR THEMES */
+  .bg-red { background: linear-gradient(135deg, #ff6b6b, #ee5a24); }
+  .bg-yellow { background: linear-gradient(135deg, #feca57, #f0932b); }
+  .bg-blue { background: linear-gradient(135deg, #48dbfb, #0abde3); }
+  .bg-green { background: linear-gradient(135deg, #55efc4, #00b894); }
+  .bg-purple { background: linear-gradient(135deg, #a29bfe, #6c5ce7); }
+  .bg-pink { background: linear-gradient(135deg, #fd79a8, #e84393); }
+
+  .text-red { color: #ff6b6b; }
+  .text-yellow { color: #feca57; }
+  .text-blue { color: #48dbfb; }
+  .text-green { color: #55efc4; }
+  .text-purple { color: #a29bfe; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- HEADER -->
+  <div class="header">
+    <h1>🎯 Luồng Chạy Phát Triển Kênh YouTube</h1>
+    <p>Từ Setup → Sản xuất → Chẩn đoán → Tối ưu — Dựa trên 100+ kênh thực chiến</p>
+  </div>
+
+  <!-- PHASE 1: SETUP -->
+  <div class="phase-card">
+    <div class="phase-header">
+      <div class="phase-icon bg-purple">🚀</div>
+      <div>
+        <div class="phase-title text-purple">Phase 1: Chuẩn Bị Kênh</div>
+        <div class="phase-subtitle">Nền tảng quyết định 50% thành bại</div>
+      </div>
+    </div>
+    <ul class="step-list">
+      <li><div class="dot bg-purple"></div>Chọn ngách phù hợp — tránh ngách quá đông, cạnh tranh cao</li>
+      <li><div class="dot bg-purple"></div>Nghiên cứu đối thủ — xem format, key, tần suất đăng</li>
+      <li><div class="dot bg-purple"></div>Chọn <strong>key (góc tiếp cận)</strong> đúng level của mình</li>
+      <li><div class="dot bg-purple"></div>Áp dụng chiến lược <strong>"5 kênh chọn 1"</strong> — tạo 5 cơ hội, giữ kênh có signal</li>
+    </ul>
+  </div>
+
+  <div class="flow-arrow"><div class="arrow"></div></div>
+
+  <!-- PHASE 2: PRODUCTION -->
+  <div class="phase-card">
+    <div class="phase-header">
+      <div class="phase-icon bg-green">🎬</div>
+      <div>
+        <div class="phase-title text-green">Phase 2: Sản Xuất Nội Dung</div>
+        <div class="phase-subtitle">Ra 5–10 video cùng format để YouTube nhận diện</div>
+      </div>
+    </div>
+    <ul class="step-list">
+      <li><div class="dot bg-green"></div>Hook 10 giây đầu phải mạnh — gây tò mò ngay lập tức</li>
+      <li><div class="dot bg-green"></div>Nội dung khớp với lời hứa từ tiêu đề & thumbnail</li>
+      <li><div class="dot bg-green"></div>Giữ nhịp video liên tục — tránh lan man, hứa 1 đằng nói 1 nẻo</li>
+      <li><div class="dot bg-green"></div>Thumbnail bắt mắt + tiêu đề kích thích tò mò</li>
+      <li><div class="dot bg-green"></div>Đăng đều 5–10 video → đủ data để chẩn đoán</li>
+    </ul>
+  </div>
+
+  <div class="flow-arrow"><div class="arrow"></div></div>
+
+  <!-- PHASE 3: DIAGNOSTIC -->
+  <div class="phase-card diagnostic-section">
+    <div class="phase-header">
+      <div class="phase-icon bg-yellow">🔍</div>
+      <div>
+        <div class="phase-title text-yellow">Phase 3: Chẩn Đoán — "Tại Kênh" hay "Tại Mình"?</div>
+        <div class="phase-subtitle">Sau 20–30 video, phân tích 3 trường hợp</div>
+      </div>
+    </div>
+
+    <div class="diagnostic-grid">
+      <!-- Case A -->
+      <div class="case-card case-a">
+        <div class="case-label">🔴 Case A</div>
+        <div class="case-title">Có Impressions, Không Click</div>
+        <div class="case-symptom">
+          <strong>Triệu chứng:</strong> Hiển thị có nhưng CTR thấp, view thấp
+        </div>
+        <div style="font-size:0.78rem; font-weight:700; color:#ff6b6b; margin-bottom:8px;">
+          → Vấn đề: CỬA VÀO (bấm)
+        </div>
+        <ul class="fix-list">
+          <li><span class="fix-icon">🔧</span> Sửa thumbnail cho bắt mắt</li>
+          <li><span class="fix-icon">🔧</span> Đổi tiêu đề kích thích hơn</li>
+          <li><span class="fix-icon">🔧</span> Thay đổi góc tiếp cận (key)</li>
+        </ul>
+      </div>
+
+      <!-- Case B -->
+      <div class="case-card case-b">
+        <div class="case-label">🟡 Case B</div>
+        <div class="case-title">Có Click, Retention Rớt</div>
+        <div class="case-symptom">
+          <strong>Triệu chứng:</strong> Click ổn nhưng vào xem vài giây là out
+        </div>
+        <div style="font-size:0.78rem; font-weight:700; color:#feca57; margin-bottom:8px;">
+          → Vấn đề: NỘI DUNG (ở lại)
+        </div>
+        <ul class="fix-list">
+          <li><span class="fix-icon">🔧</span> Cải thiện hook 10s đầu</li>
+          <li><span class="fix-icon">🔧</span> Bỏ lan man, đi thẳng vấn đề</li>
+          <li><span class="fix-icon">🔧</span> Tăng nhịp video, thêm B-roll</li>
+          <li><span class="fix-icon">🔧</span> Khớp nội dung với lời hứa</li>
+        </ul>
+      </div>
+
+      <!-- Case C -->
+      <div class="case-card case-c">
+        <div class="case-label">🔵 Case C</div>
+        <div class="case-title">Không Có Đề Xuất</div>
+        <div class="case-symptom">
+          <strong>Triệu chứng:</strong> Impressions cực ít, Browse/Suggested = 0
+        </div>
+        <div style="font-size:0.78rem; font-weight:700; color:#48dbfb; margin-bottom:8px;">
+          → Vấn đề: TẠI KÊNH (đề xuất)
+        </div>
+        <ul class="fix-list">
+          <li><span class="fix-icon">🔧</span> Đổi key, giữ ngách</li>
+          <li><span class="fix-icon">🔧</span> Ra 5–10 video format mới</li>
+          <li><span class="fix-icon">🔧</span> Test 5 kênh → giữ kênh có signal</li>
+          <li><span class="fix-icon">🔧</span> Kiểm tra kênh có "mùi" chưa</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="flow-arrow"><div class="arrow"></div></div>
+
+  <!-- PHASE 4: STRATEGY -->
+  <div class="phase-card">
+    <div class="phase-header">
+      <div class="phase-icon bg-pink">⚡</div>
+      <div>
+        <div class="phase-title text-purple">Phase 4: Chiến Lược Sửa Lỗi</div>
+        <div class="phase-subtitle">Ưu tiên sửa theo đúng thứ tự</div>
+      </div>
+    </div>
+
+    <div class="strategy-grid">
+      <div class="strategy-box">
+        <h4>🏆 Nếu "Tại Kênh"</h4>
+        <ul class="fix-list">
+          <li><span class="fix-icon">1️⃣</span> Đổi key dễ thở hơn, ít cạnh tranh</li>
+          <li><span class="fix-icon">2️⃣</span> Ra 5–10 video cùng format để YT nhận diện</li>
+          <li><span class="fix-icon">3️⃣</span> Test 5 kênh chọn 1 — giữ kênh có đề xuất</li>
+          <li><span class="fix-icon">4️⃣</span> Bỏ kênh "im" — không cắm đầu 2–3 tháng</li>
+        </ul>
+      </div>
+      <div class="strategy-box">
+        <h4>💪 Nếu "Tại Mình"</h4>
+        <ul class="fix-list">
+          <li><span class="fix-icon">1️⃣</span> Chọn key + góc tiếp cận đúng level</li>
+          <li><span class="fix-icon">2️⃣</span> Sửa thumbnail & tiêu đề (tăng CTR)</li>
+          <li><span class="fix-icon">3️⃣</span> Cải thiện hook 10s đầu + nhịp video</li>
+          <li><span class="fix-icon">4️⃣</span> Đảm bảo nội dung khớp lời hứa</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="flow-arrow"><div class="arrow"></div></div>
+
+  <!-- 60s TEST -->
+  <div class="test-section">
+    <div class="test-header">
+      <div style="font-size:1.6rem;">⏱️</div>
+      <h3>Bài Test 60 Giây — "Tại Kênh" hay "Tại Mình"?</h3>
+    </div>
+    <div class="test-grid">
+      <div class="test-row">
+        <div class="test-num">1</div>
+        <div class="test-question">Impressions có > 500/video không?</div>
+        <div class="test-result check-channel">Không → Tại Kênh</div>
+      </div>
+      <div class="test-row">
+        <div class="test-num">2</div>
+        <div class="test-question">CTR có > 3% không?</div>
+        <div class="test-result check-content">Không → Sửa Cửa Vào</div>
+      </div>
+      <div class="test-row">
+        <div class="test-num">3</div>
+        <div class="test-question">Avg. Retention > 30% không?</div>
+        <div class="test-result check-content">Không → Sửa Nội Dung</div>
+      </div>
+      <div class="test-row">
+        <div class="test-num">4</div>
+        <div class="test-question">Đã ra đủ 20+ video chưa?</div>
+        <div class="test-result check-channel">Không → Chưa đủ Data</div>
+      </div>
+      <div class="test-row">
+        <div class="test-num">5</div>
+        <div class="test-question">Đã test 5 kênh chưa?</div>
+        <div class="test-result check-channel">Không → Nên Test Thêm</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONCLUSION -->
+  <div class="conclusion">
+    <p>
+      20–30 video mà không biết flop vì đâu là <strong>bình thường</strong>.<br>
+      Quan trọng là: phải biết mình đang sai ở <strong>"cửa vào"</strong> hay <strong>"ở lại"</strong> hay <strong>"đề xuất"</strong>.<br>
+      Đừng level 2 mà ôm key level 9 — chọn key đúng sức mình! 💪
+    </p>
+  </div>
+
+</div>
+</body>
+</html>
